@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+
+	xmlns:task="http://www.springframework.org/schema/task"
+
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+
+	http://www.springframework.org/schema/websocket   
+	http://www.springframework.org/schema/websocket/spring-websocket.xsd
+
+	http://www.springframework.org/schema/task 
+	http://www.springframework.org/schema/task/spring-task-4.3.xsd
+
+	">
+	<!-- 启动注解 开启定时器开关 -->
+	<task:annotation-driven />
+
+	<!-- 自动扫描 将标注Spring注解的类自动转化Bean -->
+	<context:component-scan base-package="cn.com.ziquan"></context:component-scan>
+	
+	<!-- 启动注解 配置映射器与适配器 -->  
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+	<!-- 定义SchedulerFactoryBean类 -->
+	<!-- <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" />
+	<bean class="cn.com.ziquan.quartz.FisrtQuartz" /> -->
+
+	 <!-- 视图解析器 -->  
+  	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!-- 文件处理解析器 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="maxUploadSize" value="1024000000" />
+		<property name="resolveLazily" value="true" />
+		<property name="maxInMemorySize" value="4096" />
+	</bean>
+
+	<!-- 加载数据资源属性文件 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:db.properties" />
+	</bean>
+	
+  	<!-- 阿里 druid 数据库连接池 -->
+    <bean id = "dataSource" class = "com.alibaba.druid.pool.DruidDataSource" destroy-method = "close" >  
+         <!-- 数据库基本信息配置 -->
+         <property name = "url" value = "${url}" />  
+         <property name = "username" value = "${username}" />  
+         <property name = "password" value = "${password}" />  
+         <property name = "driverClassName" value = "${driverClassName}" />  
+         <property name = "filters" value = "${filters}" />  
+          <!-- 最大并发连接数 -->
+         <property name = "maxActive" value = "${maxActive}" />
+         <!-- 初始化连接数量 -->
+         <property name = "initialSize" value = "${initialSize}" />
+         <!-- 配置获取连接等待超时的时间 -->
+         <property name = "maxWait" value = "${maxWait}" />
+         <!-- 最小空闲连接数 -->
+         <property name = "minIdle" value = "${minIdle}" />  
+         <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+         <property name = "timeBetweenEvictionRunsMillis" value ="${timeBetweenEvictionRunsMillis}" />
+         <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+         <property name = "minEvictableIdleTimeMillis" value ="${minEvictableIdleTimeMillis}" />  
+         <property name = "validationQuery" value = "${validationQuery}" />  
+         <property name = "testWhileIdle" value = "${testWhileIdle}" />  
+         <property name = "testOnBorrow" value = "${testOnBorrow}" />  
+         <property name = "testOnReturn" value = "${testOnReturn}" />  
+         <property name = "maxOpenPreparedStatements" value ="${maxOpenPreparedStatements}" />
+         <!-- 打开 removeAbandoned 功能 -->
+         <property name = "removeAbandoned" value = "${removeAbandoned}" />
+         <!-- 1800 秒，也就是 30 分钟 -->
+         <property name = "removeAbandonedTimeout" value ="${removeAbandonedTimeout}" />
+         <!-- 关闭 abanded 连接时输出错误日志 -->   
+         <property name = "logAbandoned" value = "${logAbandoned}" />
+    </bean >
+
+	<!-- 核心sqlSessionFactory 加载映射配置文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mapper.xml文件 -->
+		<property name="mapperLocations" value="classpath:cn/com/ziquan/mapper/*.xml"></property>
+		<!-- 注册分页插件 -->
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageHelper">
+					<property name="properties">
+						<value>dialect=oracle</value>
+					</property>
+				</bean>
+				<!-- mybatis 数据权限拦截器 -->
+				<!-- <bean class="cn.com.ziquan.interceptor.MyLimitInterceptor"></bean> -->
+			</array>
+		</property>
+	</bean>
+
+	<!-- 装配dao接口 对映射类产生代理 加载映射类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.com.ziquan.mapper" /> <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+
+	<!-- 声明式事务管理 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 开启事务注解 -->
+	<tx:annotation-driven transaction-manager="trans" />
+	
+		<!-- 拦截器 -->
+<!-- 	 <mvc:interceptors>
+		<mvc:interceptor>
+		    登录拦截
+			<mvc:mapping path="/**"/>
+			<bean class="cn.com.ziquan.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor> 
+	
+		 <mvc:interceptor>
+		    能拦截的内容
+			<mvc:exclude-mapping path=""/>
+			 <mvc:mapping path="/**"/>
+			<bean class="cn.com.ziquan.interceptor.MyInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>    --> 
+</beans>

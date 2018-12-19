@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.ziquan.mapper.CourseMapper" >
+  <resultMap id="BaseResultMap" type="cn.com.ziquan.pojo.Course" >
+    <id column="COURSEID" property="courseid" jdbcType="DECIMAL" />
+    <result column="COURSENAME" property="coursename" jdbcType="VARCHAR" />
+    <result column="PLANERID" property="planerid" jdbcType="DECIMAL" />
+    <result column="PLANERNAME" property="planername" jdbcType="VARCHAR" />
+    <result column="EDITIONNAME" property="editionname" jdbcType="VARCHAR" />
+    <result column="GRADEID" property="gradeid" jdbcType="DECIMAL" />
+    <result column="SUMHOUR" property="sumhour" jdbcType="DECIMAL" />
+    <result column="COURSEINTRO" property="courseintro" jdbcType="VARCHAR" />
+    <result column="ADDDATETIME" property="adddatetime" jdbcType="DATE" />
+    <result column="CREATIONPERSON" property="creationperson" jdbcType="VARCHAR" />
+    <result column="CREATIONDATE" property="creationdate" jdbcType="DATE" />
+    <result column="USESTATUS" property="usestatus" jdbcType="VARCHAR" />
+    <result column="STANDBYYI" property="standbyyi" jdbcType="VARCHAR" />
+    <result column="STANDBYER" property="standbyer" jdbcType="VARCHAR" />
+    <result column="STANDBYSAN" property="standbysan" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COURSEID, COURSENAME, PLANERID, PLANERNAME, EDITIONNAME, GRADEID, SUMHOUR, COURSEINTRO, 
+    ADDDATETIME, CREATIONPERSON, CREATIONDATE, USESTATUS, STANDBYYI, STANDBYER, STANDBYSAN
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from COURSE
+    where COURSEID = #{courseid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from COURSE
+    where COURSEID = #{courseid,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="cn.com.ziquan.pojo.Course" >
+    insert into COURSE (COURSEID, COURSENAME, PLANERID, 
+      PLANERNAME, EDITIONNAME, GRADEID, 
+      SUMHOUR, COURSEINTRO, ADDDATETIME, 
+      CREATIONPERSON, CREATIONDATE, USESTATUS, 
+      STANDBYYI, STANDBYER, STANDBYSAN
+      )
+    values (#{courseid,jdbcType=DECIMAL}, #{coursename,jdbcType=VARCHAR}, #{planerid,jdbcType=DECIMAL}, 
+      #{planername,jdbcType=VARCHAR}, #{editionname,jdbcType=VARCHAR}, #{gradeid,jdbcType=DECIMAL}, 
+      #{sumhour,jdbcType=DECIMAL}, #{courseintro,jdbcType=VARCHAR}, #{adddatetime,jdbcType=DATE}, 
+      #{creationperson,jdbcType=VARCHAR}, #{creationdate,jdbcType=DATE}, #{usestatus,jdbcType=VARCHAR}, 
+      #{standbyyi,jdbcType=VARCHAR}, #{standbyer,jdbcType=VARCHAR}, #{standbysan,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.ziquan.pojo.Course" >
+    insert into COURSE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="courseid != null" >
+        COURSEID,
+      </if>
+      <if test="coursename != null" >
+        COURSENAME,
+      </if>
+      <if test="planerid != null" >
+        PLANERID,
+      </if>
+      <if test="planername != null" >
+        PLANERNAME,
+      </if>
+      <if test="editionname != null" >
+        EDITIONNAME,
+      </if>
+      <if test="gradeid != null" >
+        GRADEID,
+      </if>
+      <if test="sumhour != null" >
+        SUMHOUR,
+      </if>
+      <if test="courseintro != null" >
+        COURSEINTRO,
+      </if>
+      <if test="adddatetime != null" >
+        ADDDATETIME,
+      </if>
+      <if test="creationperson != null" >
+        CREATIONPERSON,
+      </if>
+      <if test="creationdate != null" >
+        CREATIONDATE,
+      </if>
+      <if test="usestatus != null" >
+        USESTATUS,
+      </if>
+      <if test="standbyyi != null" >
+        STANDBYYI,
+      </if>
+      <if test="standbyer != null" >
+        STANDBYER,
+      </if>
+      <if test="standbysan != null" >
+        STANDBYSAN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="courseid != null" >
+        #{courseid,jdbcType=DECIMAL},
+      </if>
+      <if test="coursename != null" >
+        #{coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="planerid != null" >
+        #{planerid,jdbcType=DECIMAL},
+      </if>
+      <if test="planername != null" >
+        #{planername,jdbcType=VARCHAR},
+      </if>
+      <if test="editionname != null" >
+        #{editionname,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeid != null" >
+        #{gradeid,jdbcType=DECIMAL},
+      </if>
+      <if test="sumhour != null" >
+        #{sumhour,jdbcType=DECIMAL},
+      </if>
+      <if test="courseintro != null" >
+        #{courseintro,jdbcType=VARCHAR},
+      </if>
+      <if test="adddatetime != null" >
+        #{adddatetime,jdbcType=DATE},
+      </if>
+      <if test="creationperson != null" >
+        #{creationperson,jdbcType=VARCHAR},
+      </if>
+      <if test="creationdate != null" >
+        #{creationdate,jdbcType=DATE},
+      </if>
+      <if test="usestatus != null" >
+        #{usestatus,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyyi != null" >
+        #{standbyyi,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyer != null" >
+        #{standbyer,jdbcType=VARCHAR},
+      </if>
+      <if test="standbysan != null" >
+        #{standbysan,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.ziquan.pojo.Course" >
+    update COURSE
+    <set >
+      <if test="coursename != null" >
+        COURSENAME = #{coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="planerid != null" >
+        PLANERID = #{planerid,jdbcType=DECIMAL},
+      </if>
+      <if test="planername != null" >
+        PLANERNAME = #{planername,jdbcType=VARCHAR},
+      </if>
+      <if test="editionname != null" >
+        EDITIONNAME = #{editionname,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeid != null" >
+        GRADEID = #{gradeid,jdbcType=DECIMAL},
+      </if>
+      <if test="sumhour != null" >
+        SUMHOUR = #{sumhour,jdbcType=DECIMAL},
+      </if>
+      <if test="courseintro != null" >
+        COURSEINTRO = #{courseintro,jdbcType=VARCHAR},
+      </if>
+      <if test="adddatetime != null" >
+        ADDDATETIME = #{adddatetime,jdbcType=DATE},
+      </if>
+      <if test="creationperson != null" >
+        CREATIONPERSON = #{creationperson,jdbcType=VARCHAR},
+      </if>
+      <if test="creationdate != null" >
+        CREATIONDATE = #{creationdate,jdbcType=DATE},
+      </if>
+      <if test="usestatus != null" >
+        USESTATUS = #{usestatus,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyyi != null" >
+        STANDBYYI = #{standbyyi,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyer != null" >
+        STANDBYER = #{standbyer,jdbcType=VARCHAR},
+      </if>
+      <if test="standbysan != null" >
+        STANDBYSAN = #{standbysan,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where COURSEID = #{courseid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.ziquan.pojo.Course" >
+    update COURSE
+    set COURSENAME = #{coursename,jdbcType=VARCHAR},
+      PLANERID = #{planerid,jdbcType=DECIMAL},
+      PLANERNAME = #{planername,jdbcType=VARCHAR},
+      EDITIONNAME = #{editionname,jdbcType=VARCHAR},
+      GRADEID = #{gradeid,jdbcType=DECIMAL},
+      SUMHOUR = #{sumhour,jdbcType=DECIMAL},
+      COURSEINTRO = #{courseintro,jdbcType=VARCHAR},
+      ADDDATETIME = #{adddatetime,jdbcType=DATE},
+      CREATIONPERSON = #{creationperson,jdbcType=VARCHAR},
+      CREATIONDATE = #{creationdate,jdbcType=DATE},
+      USESTATUS = #{usestatus,jdbcType=VARCHAR},
+      STANDBYYI = #{standbyyi,jdbcType=VARCHAR},
+      STANDBYER = #{standbyer,jdbcType=VARCHAR},
+      STANDBYSAN = #{standbysan,jdbcType=VARCHAR}
+    where COURSEID = #{courseid,jdbcType=DECIMAL}
+  </update>
+</mapper>
